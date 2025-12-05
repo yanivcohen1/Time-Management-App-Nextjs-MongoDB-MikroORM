@@ -120,10 +120,21 @@ const KanbanBoard = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', overflowX: 'auto', height: '100%', gap: 2 }}>
+    <Box sx={{ 
+      display: 'flex', 
+      flexDirection: { xs: 'column', md: 'row' },
+      overflowX: { xs: 'hidden', md: 'auto' },
+      height: { xs: 'auto', md: '100%' },
+      gap: 2 
+    }}>
       <DragDropContext onDragEnd={onDragEnd}>
         {Object.entries(columns).map(([columnId, columnTitle]) => (
-          <Box key={columnId} sx={{ minWidth: 300, width: 300, display: 'flex', flexDirection: 'column' }}>
+          <Box key={columnId} sx={{ 
+            minWidth: { xs: '100%', md: 300 }, 
+            width: { xs: '100%', md: 300 }, 
+            display: 'flex', 
+            flexDirection: 'column' 
+          }}>
             <Typography variant="h6" sx={{ mb: 2, textAlign: 'center', fontWeight: 'bold' }}>
               {columnTitle}
             </Typography>
@@ -136,7 +147,7 @@ const KanbanBoard = () => {
                     bgcolor: 'background.paper',
                     p: 2,
                     borderRadius: 2,
-                    minHeight: 500,
+                    minHeight: { xs: 100, md: 500 },
                     flexGrow: 1,
                     boxShadow: 1,
                   }}
