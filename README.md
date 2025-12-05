@@ -17,6 +17,14 @@ A full-stack Todo application built with Next.js, MikroORM, MongoDB, and Materia
     *   End-to-End (E2E): [Cypress](https://www.cypress.io/)
 *   **Package Manager**: [pnpm](https://pnpm.io/)
 
+## Features
+
+*   **Main Status Board (Kanban)**: Interactive drag-and-drop board to manage todo statuses (Backlog, Pending, In Progress, Completed).
+*   **Track Status**: Comprehensive table view with advanced filtering capabilities (by Title, Status, and Due Date).
+*   **Dates by Workload**: Visual breakdown of tasks grouped by their due dates to help manage daily workload.
+*   **Authentication**: Secure user authentication system.
+*   **Responsive UI**: Clean and modern interface built with Material UI.
+
 ## Project Structure
 
 ```
@@ -34,9 +42,10 @@ my-app/
 ├── pages/              # Next.js pages and API routes
 │   ├── api/            # API endpoints (/auth, /todos)
 │   ├── _app.tsx        # App wrapper
-│   ├── index.tsx       # Home page (Todo Board)
+│   ├── index.tsx       # Home page (Main Status Board - Kanban)
 │   ├── login.tsx       # Login page
-│   └── register.tsx    # Registration page
+│   ├── todos.tsx       # Track Status (Table view with filtering)
+│   └── workload.tsx    # Dates by Workload view
 ├── public/             # Static assets
 ├── scripts/            # Utility scripts (e.g., database seeding)
 ├── styles/             # Global styles
@@ -80,7 +89,7 @@ Start the development server:
 pnpm dev
 ```
 
-The application will be available at `http://localhost:3001` (or the port specified in your output).
+The application will be available at `http://localhost:3000` (or the port specified in your output).
 
 ### Running Tests
 
