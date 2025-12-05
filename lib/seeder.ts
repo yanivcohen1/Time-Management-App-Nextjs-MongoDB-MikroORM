@@ -34,6 +34,10 @@ export const seedDatabase = async (em: EntityManager) => {
     new Todo('Buy groceries', user),
     new Todo('Walk the dog', user),
     new Todo('Finish project', user),
+    new Todo('Demo Backlog', user),
+    new Todo('Demo Pending', user),
+    new Todo('Demo In Progress', user),
+    new Todo('Demo Completed', user),
   ];
   todos[0].status = TodoStatus.PENDING;
   todos[0].dueTime = new Date(Date.now() + 86400000); // Tomorrow
@@ -42,6 +46,11 @@ export const seedDatabase = async (em: EntityManager) => {
   todos[1].dueTime = new Date(Date.now() - 86400000); // Yesterday (Overdue)
 
   todos[2].status = TodoStatus.COMPLETED;
+
+  todos[3].status = TodoStatus.BACKLOG;
+  todos[4].status = TodoStatus.PENDING;
+  todos[5].status = TodoStatus.IN_PROGRESS;
+  todos[6].status = TodoStatus.COMPLETED;
 
   em.persist(todos);
 
