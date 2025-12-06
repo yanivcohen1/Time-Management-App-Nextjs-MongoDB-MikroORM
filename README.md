@@ -96,7 +96,7 @@ The application will be available at `http://localhost:3000` (or the port specif
 **Unit & Integration Tests (Jest):**
 
 ```bash
-pnpm tests
+pnpm test
 ```
 
 **End-to-End Tests (Cypress):**
@@ -104,7 +104,7 @@ pnpm tests
 1.  Ensure the development server is running (`pnpm dev`).
 2.  Run Cypress tests:
     ```bash
-    pnpm tests:e2e
+    pnpm test:e2e
     ```
 
 ### Linting
@@ -123,6 +123,6 @@ pnpm lint
 | `pnpm build` | Builds the application for production. |
 | `pnpm start` | Starts the production server. |
 | `pnpm lint` | Runs ESLint to check for code quality issues. |
-| `pnpm tests` | Runs unit and integration tests using Jest. |
-| `pnpm tests:e2e` | Runs end-to-end tests using Cypress (headless mode). |
+| `pnpm test` | Runs unit and integration tests using Jest. |
+| `pnpm test:e2e` | Runs end-to-end tests using Cypress (headless mode). |
 | `pnpm seed` | Seeds the database with initial data. |

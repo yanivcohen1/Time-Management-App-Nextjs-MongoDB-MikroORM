@@ -87,4 +87,22 @@ describe('/api/todos', () => {
 
     await handler(req, res);
   });
+
+  it('GET returns all todos for admin', async () => {
+    (isAuthenticated as jest.Mock).mockReturnValue({ userId: validUserId, role: 'admin' });
+    const { req, res } = createMocks({
+      method: 'GET',
+    });
+
+    mockFind.mockResolvedValue([{ id: '1', title: 'Test Todo' }]);
+
+    await handler(req, res);
+
+    expect(res._getStatusCode()).toBe(200);
+    expect(mockFind).toHaveBeenCalledWith(
+      expect.anything(), 
+      {}, 
+      { orderBy: { createdAt: 'DESC' } }
+    );
+  });
 });

@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "tests": "jest",
-    "tests:e2e": "cypress run",
-    "tests:e2e:report": "rimraf cypress/reports && cypress run",
+    "test": "jest",
+    "test:e2e": "cypress run",
+    "test:e2e:report": "rimraf cypress/reports && cypress run",
     "seed": "ts-node -O \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/seed.ts"
   },
   "dependencies": {

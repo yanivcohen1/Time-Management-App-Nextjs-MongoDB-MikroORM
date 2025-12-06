@@ -11,7 +11,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const orm = await getORM();
   const em = orm.em.fork();
 
-  const todo = await em.findOne(Todo, { id: id as string, owner: userPayload.userId });
+  const filter = userPayload.role === 'admin' ? { id: id as string } : { id: id as string, owner: userPayload.userId };
+  const todo = await em.findOne(Todo, filter);
 
   if (!todo) {
     return res.status(404).json({ message: 'Todo not found' });

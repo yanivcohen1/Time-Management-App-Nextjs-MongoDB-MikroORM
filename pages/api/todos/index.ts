@@ -14,7 +14,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === 'GET') {
     try {
-      const todos = await em.find(Todo, { owner: new ObjectId(userPayload.userId) }, { orderBy: { createdAt: 'DESC' } });
+      const filter = userPayload.role === 'admin' ? {} : { owner: new ObjectId(userPayload.userId) };
+      const todos = await em.find(Todo, filter, { orderBy: { createdAt: 'DESC' } });
       return res.status(200).json(todos);
     } catch (error) {
       console.error('Error fetching todos:', error);
