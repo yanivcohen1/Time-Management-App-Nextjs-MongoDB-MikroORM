@@ -90,7 +90,7 @@ export default function Layout({ children }: LayoutProps) {
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
-            <ListItemText primary="Dates by workload" />
+            <ListItemText primary="Main" />
           </ListItemButton>
         </ListItem>
       </List>
