@@ -113,7 +113,7 @@ export default function Workload() {
               <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                 {STATUS_MAP[statusKey]}
               </Typography>
-              <Typography variant="h3" component="div" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
                 {summaryCounts[statusKey as keyof typeof summaryCounts]}
               </Typography>
             </Paper>
