@@ -4,6 +4,7 @@ import { Todo } from '../../../entities/Todo';
 import { isAuthenticated } from '../../../lib/auth';
 import { User } from '../../../entities/User';
 import { ObjectId } from '@mikro-orm/mongodb';
+import { FilterQuery } from '@mikro-orm/core';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const userPayload = isAuthenticated(req, res);
@@ -14,7 +15,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === 'GET') {
     try {
-      const filter = userPayload.role === 'admin' ? {} : { owner: new ObjectId(userPayload.userId) };
+      const filter: FilterQuery<Todo> = {};
+      if (userPayload.role === 'admin') {
+        const { userId } = req.query;
+        if (userId && typeof userId === 'string') {
+          filter.owner = new ObjectId(userId);
+        }
+      } else {
+        filter.owner = new ObjectId(userPayload.userId);
+      }
       const todos = await em.find(Todo, filter, { orderBy: { createdAt: 'DESC' } });
       return res.status(200).json(todos);
     } catch (error) {

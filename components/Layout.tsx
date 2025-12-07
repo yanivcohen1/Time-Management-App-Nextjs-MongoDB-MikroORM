@@ -16,6 +16,10 @@ import {
   useMediaQuery,
   useTheme,
   ListSubheader,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
@@ -30,6 +34,7 @@ import { useThemeContext } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
 import TodoModal from './TodoModal';
+import api from '../lib/axios';
 
 const drawerWidth = 240;
 
@@ -42,9 +47,16 @@ export default function Layout({ children }: LayoutProps) {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [mobileOpen, setMobileOpen] = useState(false);
   const { toggleColorMode, mode } = useThemeContext();
-  const { logout, user } = useAuth();
+  const { logout, user, selectedUserId, setSelectedUserId } = useAuth();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [users, setUsers] = useState<{id: string, name: string}[]>([]);
+
+  React.useEffect(() => {
+    if (user?.role === 'admin') {
+      api.get('/users').then(res => setUsers(res.data)).catch(console.error);
+    }
+  }, [user]);
 
   const listItemSx = {
     '&.Mui-selected': {
@@ -160,6 +172,27 @@ export default function Layout({ children }: LayoutProps) {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             {user ? `Welcome, ${user.name}` : 'Agile Tasks'}
           </Typography>
+          {user?.role === 'admin' && (
+            <FormControl size="small" sx={{ minWidth: 120, mr: 2, backgroundColor: 'background.paper', borderRadius: 1 }}>
+              <InputLabel id="user-select-label">User</InputLabel>
+              <Select
+                labelId="user-select-label"
+                id="user-select"
+                value={selectedUserId || ''}
+                label="User"
+                onChange={(e) => setSelectedUserId(e.target.value || null)}
+              >
+                <MenuItem value="">
+                  <em>All Users</em>
+                </MenuItem>
+                {users.map((u) => (
+                  <MenuItem key={u.id} value={u.id}>
+                    {u.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
           <IconButton sx={{ ml: 1 }} onClick={toggleColorMode} color="inherit">
             {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>

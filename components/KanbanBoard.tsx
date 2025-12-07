@@ -4,6 +4,7 @@ import { Box, Card, CardContent, Typography, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import api from '../lib/axios';
 import TodoModal from './TodoModal';
+import { useAuth } from '../context/AuthContext';
 
 interface Todo {
   id: string;
@@ -28,6 +29,7 @@ const columnColors: Record<string, string> = {
 };
 
 const KanbanBoard = () => {
+  const { selectedUserId } = useAuth();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [columnsData, setColumnsData] = useState<Record<string, Todo[]>>({
     BACKLOG: [],
@@ -38,26 +40,20 @@ const KanbanBoard = () => {
   const [editTodo, setEditTodo] = useState<Todo | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const fetchTodos = async () => {
+  const fetchTodos = React.useCallback(async () => {
     try {
-      const res = await api.get('/todos');
+      const params = selectedUserId ? { userId: selectedUserId } : {};
+      const res = await api.get('/todos', { params });
       setTodos(res.data);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [selectedUserId]);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await api.get('/todos');
-        setTodos(res.data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    load();
-  }, []);
+    // eslint-disable-next-line
+    fetchTodos();
+  }, [fetchTodos]);
 
   useEffect(() => {
     const newColumns: Record<string, Todo[]> = {

@@ -27,7 +27,7 @@ const STATUS_TEXT_COLORS: Record<string, string> = {
 };
 
 export default function Workload() {
-  const { user, loading } = useAuth();
+  const { user, loading, selectedUserId } = useAuth();
   const router = useRouter();
   const [todos, setTodos] = useState<Todo[]>([]);
 
@@ -39,9 +39,10 @@ export default function Workload() {
 
   useEffect(() => {
     if (user) {
-      api.get('/todos').then((res) => setTodos(res.data)).catch(() => {});
+      const params = selectedUserId ? { userId: selectedUserId } : {};
+      api.get('/todos', { params }).then((res) => setTodos(res.data)).catch(() => {});
     }
-  }, [user]);
+  }, [user, selectedUserId]);
 
   if (loading || !user) {
     return null;

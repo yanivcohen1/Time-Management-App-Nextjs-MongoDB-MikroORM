@@ -37,7 +37,7 @@ interface Todo {
 }
 
 export default function Todos() {
-  const { user, loading } = useAuth();
+  const { user, loading, selectedUserId } = useAuth();
   const router = useRouter();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [editTodo, setEditTodo] = useState<Todo | undefined>(undefined);
@@ -103,14 +103,15 @@ export default function Todos() {
     });
   }, [filteredTodos, order, orderBy]);
 
-  const fetchTodos = async () => {
+  const fetchTodos = React.useCallback(async () => {
     try {
-      const res = await api.get('/todos');
+      const params = selectedUserId ? { userId: selectedUserId } : {};
+      const res = await api.get('/todos', { params });
       setTodos(res.data);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [selectedUserId]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -123,7 +124,7 @@ export default function Todos() {
       // eslint-disable-next-line
       fetchTodos();
     }
-  }, [user]);
+  }, [user, fetchTodos]);
 
   const [deleteAnchorEl, setDeleteAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
