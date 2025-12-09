@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       if ((startDate && typeof startDate === 'string') || (endDate && typeof endDate === 'string')) {
-        const dateFilter: any = {};
+        const dateFilter: { $gte?: Date; $lte?: Date } = {};
         if (startDate && typeof startDate === 'string') {
            dateFilter.$gte = new Date(startDate);
         }
