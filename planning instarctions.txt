@@ -39,4 +39,4 @@ Menu Structure: The sidebar will be strictly organized into "Main status board",
 . JWT Handling: Axios will automatically attach the Authorization header to requests and handle token storage upon successful login response.
 3. Z-Index: Mobile sidebar will use a high z-index to overlay content as requested.
 
----------------------------------------
+-----------------------------------------
