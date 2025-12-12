@@ -141,7 +141,7 @@ pnpm lint
 
 ## Ligth mode
 
-<img width="2275" height="1438" alt="image" src="https://github.com/user-attachments/assets/62f68e96-2479-4454-8793-2ceaaca71be9" />
+<img width="2509" height="1718" alt="image" src="https://github.com/user-attachments/assets/b34699ab-7f79-4fca-b765-a69f8ed5aae1" />
 
 ## Mobile mode
 
