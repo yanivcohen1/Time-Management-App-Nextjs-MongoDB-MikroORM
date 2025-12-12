@@ -30,6 +30,9 @@ export class Todo {
   @Property({ nullable: true })
   dueTime?: Date;
 
+  @Property({ nullable: true })
+  duration?: number;
+
   @ManyToOne(() => User)
   owner!: User;
 

@@ -19,6 +19,7 @@ interface Todo {
   description?: string;
   status: string;
   dueTime?: string;
+  duration?: number;
 }
 
 interface TodoModalProps {
@@ -33,6 +34,7 @@ const TodoModal = ({ open, onClose, todo, onSuccess }: TodoModalProps) => {
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState('BACKLOG');
   const [dueTime, setDueTime] = useState('');
+  const [duration, setDuration] = useState<number | ''>('');
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
@@ -42,11 +44,13 @@ const TodoModal = ({ open, onClose, todo, onSuccess }: TodoModalProps) => {
       setDescription(todo.description || '');
       setStatus(todo.status);
       setDueTime(todo.dueTime ? new Date(todo.dueTime).toISOString().slice(0, 16) : '');
+      setDuration(todo.duration || '');
     } else {
       setTitle('');
       setDescription('');
       setStatus('BACKLOG');
       setDueTime('');
+      setDuration('');
     }
   }, [todo, open]);
 
@@ -57,6 +61,7 @@ const TodoModal = ({ open, onClose, todo, onSuccess }: TodoModalProps) => {
         description,
         status,
         dueTime: dueTime ? new Date(dueTime) : undefined,
+        duration: duration ? Number(duration) : undefined,
       };
 
       if (todo) {
@@ -119,6 +124,14 @@ const TodoModal = ({ open, onClose, todo, onSuccess }: TodoModalProps) => {
           InputLabelProps={{ shrink: true }}
           value={dueTime}
           onChange={(e) => setDueTime(e.target.value)}
+        />
+        <TextField
+          margin="dense"
+          label="Duration (minutes)"
+          type="number"
+          fullWidth
+          value={duration}
+          onChange={(e) => setDuration(e.target.value === '' ? '' : Number(e.target.value))}
         />
       </DialogContent>
       <DialogActions>

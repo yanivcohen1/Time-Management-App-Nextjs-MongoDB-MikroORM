@@ -19,12 +19,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'PUT') {
-    const { title, description, status, dueTime } = req.body;
+    const { title, description, status, dueTime, duration } = req.body;
     
     if (title !== undefined) todo.title = title;
     if (description !== undefined) todo.description = description;
     if (status !== undefined) todo.status = status;
     if (dueTime !== undefined) todo.dueTime = dueTime ? new Date(dueTime) : undefined;
+    if (duration !== undefined) todo.duration = duration;
 
     await em.flush();
     return res.status(200).json(todo);

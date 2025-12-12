@@ -34,6 +34,7 @@ interface Todo {
   description?: string;
   status: string;
   dueTime?: string;
+  duration?: number;
 }
 
 export default function Todos() {
@@ -244,6 +245,15 @@ export default function Todos() {
                   Due Date
                 </TableSortLabel>
               </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === 'duration'}
+                  direction={orderBy === 'duration' ? order : 'asc'}
+                  onClick={() => handleRequestSort('duration')}
+                >
+                  Duration
+                </TableSortLabel>
+              </TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -277,6 +287,9 @@ export default function Todos() {
                 </TableCell>
                 <TableCell>
                   {todo.dueTime ? new Date(todo.dueTime).toLocaleDateString() : '-'}
+                </TableCell>
+                <TableCell>
+                  {todo.duration ? `${todo.duration} mins` : '-'}
                 </TableCell>
                 <TableCell align="right">
                   <IconButton onClick={() => handleEdit(todo)}>

@@ -70,7 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'POST') {
-    const { title, description, dueTime, status } = req.body;
+    const { title, description, dueTime, status, duration } = req.body;
     if (!title) {
       return res.status(400).json({ message: 'Title is required' });
     }
@@ -84,6 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (description) todo.description = description;
     if (dueTime) todo.dueTime = new Date(dueTime);
     if (status) todo.status = status;
+    if (duration) todo.duration = duration;
 
     await em.persistAndFlush(todo);
     return res.status(201).json(todo);

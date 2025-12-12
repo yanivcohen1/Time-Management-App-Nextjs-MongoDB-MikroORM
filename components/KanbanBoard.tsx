@@ -12,6 +12,7 @@ interface Todo {
   description?: string;
   status: string;
   dueTime?: string;
+  duration?: number;
 }
 
 const columns = {
@@ -214,8 +215,13 @@ const KanbanBoard = () => {
                             )}
 
                             {todo.dueTime && (
-                                <Typography variant="caption" sx={{ color: 'grey.500' }}>
+                                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block' }}>
                                     Due: {new Date(todo.dueTime).toLocaleDateString()}
+                                </Typography>
+                            )}
+                            {todo.duration && (
+                                <Typography variant="caption" sx={{ color: 'grey.500', display: 'block' }}>
+                                    Duration: {todo.duration} mins
                                 </Typography>
                             )}
                           </CardContent>
