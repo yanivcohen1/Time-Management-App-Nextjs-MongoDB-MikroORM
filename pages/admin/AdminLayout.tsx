@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, ReactNode } from "react";
+import { useState, useMemo, ReactNode } from "react";
 import { Box, FormControlLabel, Paper, Stack, Switch, Typography } from "@mui/material";
 import { usePathname, useRouter, useParams, useSearchParams } from "next/navigation";
 import { BreadCrumb } from "primereact/breadcrumb";
@@ -49,12 +49,6 @@ export default function AdminLayout({ children }: { children?: ReactNode }) {
     }
   };
 
-  useEffect(() => {
-    if (pathname?.startsWith("/admin/inner")) {
-      setInterWorkspaceEnabledState(true);
-    }
-  }, [pathname]);
-  
   const breadcrumbItems: MenuItem[] = useMemo(
     () => {
       const adminItem = {
@@ -77,7 +71,7 @@ export default function AdminLayout({ children }: { children?: ReactNode }) {
       };
       return [adminItem, userItem];
     },
-    [router, resolvedActiveView]
+    [router, resolvedActiveView, pathname]
   );
 
   const home: MenuItem = useMemo(
@@ -121,8 +115,12 @@ export default function AdminLayout({ children }: { children?: ReactNode }) {
                   <Switch
                     key={`${transitionKey}-${interWorkspaceEnabled ? "on" : "off"}`}
                     color="primary"
-                    checked={interWorkspaceEnabled}
-                    onChange={(_, checked) => handleInterWorkspaceToggle(checked)}
+                    checked={pathname?.startsWith("/admin/inner") || interWorkspaceEnabled}
+                    onChange={(_, checked) => {
+                      if (!pathname?.startsWith("/admin/inner")) {
+                        handleInterWorkspaceToggle(checked);
+                      }
+                    }}
                   />
                 }
                 label={interWorkspaceEnabled ? "User workspace enabled" : "User workspace disabled"}
