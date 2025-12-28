@@ -6,6 +6,8 @@ import LoadingBar, { LoadingBarRef } from 'react-top-loading-bar';
 import AxiosInterceptor from '../components/AxiosInterceptor';
 import { useRef } from 'react';
 import "@/styles/globals.css";
+import "@/animation/fade.css";
+import "@/animation/slide-right.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   const loadingBarRef = useRef<LoadingBarRef>(null);

@@ -21,6 +21,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Collapse,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
@@ -31,6 +32,11 @@ import AddIcon from '@mui/icons-material/Add';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 import LogoutIcon from '@mui/icons-material/Logout';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import SettingsIcon from '@mui/icons-material/Settings';
+import WorkspacesIcon from '@mui/icons-material/Workspaces';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useThemeContext } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
@@ -52,12 +58,19 @@ export default function Layout({ children }: LayoutProps) {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [users, setUsers] = useState<{id: string, name: string}[]>([]);
+  const [adminMenuOpen, setAdminMenuOpen] = useState(false);
 
   React.useEffect(() => {
     if (user?.role === 'admin') {
       api.get('/users').then(res => setUsers(res.data)).catch(console.error);
     }
   }, [user]);
+
+  React.useEffect(() => {
+    if (router.pathname.startsWith('/admin')) {
+      setAdminMenuOpen(true);
+    }
+  }, [router.pathname]);
 
   const listItemSx = {
     '&:hover': {
@@ -150,6 +163,51 @@ export default function Layout({ children }: LayoutProps) {
           </ListItemButton>
         </ListItem>
       </List>
+      {user?.role === 'admin' && (
+        <>
+          <Divider />
+          <List>
+            <ListSubheader>Admin menu</ListSubheader>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => setAdminMenuOpen(!adminMenuOpen)}>
+                <ListItemIcon>
+                  <AdminPanelSettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Admin" />
+                {adminMenuOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+            </ListItem>
+            <Collapse in={adminMenuOpen} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem disablePadding>
+                  <ListItemButton 
+                    onClick={() => handleNavigation('/admin')}
+                    selected={router.pathname.startsWith('/admin')}
+                    sx={{ ...listItemSx, pl: 4 }}
+                  >
+                    <ListItemIcon>
+                      <SettingsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Console" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton 
+                    onClick={() => handleNavigation('/admin/inner/2?id=1&name=yar')}
+                    selected={router.pathname === '/admin/inner/[innerId]' && router.query.innerId === '2'}
+                    sx={{ ...listItemSx, pl: 4 }}
+                  >
+                    <ListItemIcon>
+                      <WorkspacesIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Workspace" />
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Collapse>
+          </List>
+        </>
+      )}
     </div>
   );
 
