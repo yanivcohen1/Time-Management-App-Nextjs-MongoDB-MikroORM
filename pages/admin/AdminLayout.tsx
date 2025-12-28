@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, ReactNode } from "react";
+import { useState, useMemo, useEffect, ReactNode } from "react";
 import { Box, FormControlLabel, Paper, Stack, Switch, Typography } from "@mui/material";
 import { usePathname, useRouter, useParams, useSearchParams } from "next/navigation";
 import { BreadCrumb } from "primereact/breadcrumb";
@@ -32,6 +32,9 @@ export default function AdminLayout({ children }: { children?: ReactNode }) {
   const resolvedActiveView = pathname?.startsWith("/admin") ? (pathname.includes("/user/") ? "user" : "admin") : activeView;
   const transitionKey = pathname ?? resolvedActiveView ?? "admin";
   const [interWorkspaceEnabled, setInterWorkspaceEnabledState] = useState(() => {
+    if (pathname?.startsWith("/admin/inner")) {
+      return true;
+    }
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('interWorkspaceEnabled');
       return saved ? JSON.parse(saved) : false;
@@ -45,13 +48,19 @@ export default function AdminLayout({ children }: { children?: ReactNode }) {
       localStorage.setItem('interWorkspaceEnabled', JSON.stringify(enabled));
     }
   };
+
+  useEffect(() => {
+    if (pathname?.startsWith("/admin/inner")) {
+      setInterWorkspaceEnabledState(true);
+    }
+  }, [pathname]);
   
   const breadcrumbItems: MenuItem[] = useMemo(
     () => {
       const adminItem = {
         label: "Admin",
         icon: "pi pi-shield",
-        style: resolvedActiveView === "admin" ? { fontWeight: 'bold', color: '#1976d2' } : {},
+        style: resolvedActiveView === "admin" && !pathname?.startsWith("/admin/inner") ? { fontWeight: 'bold', color: '#1976d2' } : {},
         command: () => {
           setActiveView("admin");
           router.push("/admin/1");
@@ -60,7 +69,7 @@ export default function AdminLayout({ children }: { children?: ReactNode }) {
       const userItem = {
         label: "User",
         icon: "pi pi-user",
-        style: resolvedActiveView === "user" ? { fontWeight: 'bold', color: '#1976d2' } : {},
+        style: resolvedActiveView === "user" && !pathname?.startsWith("/admin/inner") ? { fontWeight: 'bold', color: '#1976d2' } : {},
         command: () => {
           setActiveView("user");
           router.push("/admin/3/user/2?id=1&name=yar");
@@ -84,9 +93,11 @@ export default function AdminLayout({ children }: { children?: ReactNode }) {
       <main>
         <Box sx={{ px: { xs: 2, md: 6 }, py: 6 }}>
           <Stack spacing={3}>
-            <Paper sx={{ p: 2, borderRadius: 3 }}>
-              <BreadCrumb home={home} model={breadcrumbItems} />
-            </Paper>
+            {!pathname?.startsWith("/admin/inner") && (
+              <Paper sx={{ p: 2, borderRadius: 3 }}>
+                <BreadCrumb home={home} model={breadcrumbItems} />
+              </Paper>
+            )}
             <Stack
               direction={{ xs: "column", md: "row" }}
               alignItems={{ xs: "flex-start", md: "center" }}

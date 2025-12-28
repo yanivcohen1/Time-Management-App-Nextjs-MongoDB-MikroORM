@@ -182,7 +182,7 @@ export default function Layout({ children }: LayoutProps) {
                 <ListItem disablePadding>
                   <ListItemButton 
                     onClick={() => handleNavigation('/admin')}
-                    selected={router.pathname.startsWith('/admin')}
+                    selected={router.pathname.startsWith('/admin') && !router.pathname.startsWith('/admin/inner')}
                     sx={{ ...listItemSx, pl: 4 }}
                   >
                     <ListItemIcon>
