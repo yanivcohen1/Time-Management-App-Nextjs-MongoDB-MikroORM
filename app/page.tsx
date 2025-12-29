@@ -101,75 +101,77 @@ export default function Workload() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Layout>
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
-          Main status board
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+            Main status board
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Review how many tasks sit in each status and which dates are the busiest.
+          </Typography>
+        </Box>
+
+        <Grid container spacing={2} sx={{ mb: 6 }}>
+          {Object.keys(STATUS_MAP).map((statusKey) => (
+            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={statusKey}>
+              <Paper sx={{ p: 3, borderRadius: 2, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} elevation={0} variant="outlined">
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  {STATUS_MAP[statusKey]}
+                </Typography>
+                <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                  {summaryCounts[statusKey as keyof typeof summaryCounts]}
+                </Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+
+        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+          Dates by workload
         </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Review how many tasks sit in each status and which dates are the busiest.
-        </Typography>
-      </Box>
 
-      <Grid container spacing={2} sx={{ mb: 6 }}>
-        {Object.keys(STATUS_MAP).map((statusKey) => (
-          <Grid size={{ xs: 12, sm: 6, md: 3 }} key={statusKey}>
-            <Paper sx={{ p: 3, borderRadius: 2, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} elevation={0} variant="outlined">
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                {STATUS_MAP[statusKey]}
-              </Typography>
-              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
-                {summaryCounts[statusKey as keyof typeof summaryCounts]}
-              </Typography>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
-
-      <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
-        Dates by workload
-      </Typography>
-
-      <Stack spacing={2}>
-        {sortedDates.map((date) => {
-            const data = groupedTodos[date];
-            return (
-                <Paper key={date} sx={{ p: 3, borderRadius: 2 }} elevation={0} variant="outlined">
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                            {date}
-                        </Typography>
-                        <Chip label={`${data.total} total`} size="small" sx={{ borderRadius: 1 }} />
-                    </Box>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                        {data.total} {data.total === 1 ? 'task' : 'tasks'}
-                    </Typography>
-                    
-                    <Grid container spacing={2}>
-                        {Object.keys(STATUS_MAP).map((statusKey) => (
-                            <Grid size="auto" key={statusKey}>
-                                <Box sx={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    gap: 1, 
-                                    border: 1, 
-                                    borderColor: 'divider', 
-                                    borderRadius: 5, 
-                                    px: 1.5, 
-                                    py: 0.5 
-                                }}>
-                                    <Typography variant="body2" sx={{ color: STATUS_TEXT_COLORS[statusKey] }}>
-                                        {STATUS_MAP[statusKey]}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                        {data.counts[statusKey]}
-                                    </Typography>
-                                </Box>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Paper>
-            );
-        })}
-      </Stack>
-    </Layout>    </Suspense>  );
+        <Stack spacing={2}>
+          {sortedDates.map((date) => {
+              const data = groupedTodos[date];
+              return (
+                  <Paper key={date} sx={{ p: 3, borderRadius: 2 }} elevation={0} variant="outlined">
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
+                          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                              {date}
+                          </Typography>
+                          <Chip label={`${data.total} total`} size="small" sx={{ borderRadius: 1 }} />
+                      </Box>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                          {data.total} {data.total === 1 ? 'task' : 'tasks'}
+                      </Typography>
+                      
+                      <Grid container spacing={2}>
+                          {Object.keys(STATUS_MAP).map((statusKey) => (
+                              <Grid size="auto" key={statusKey}>
+                                  <Box sx={{ 
+                                      display: 'flex', 
+                                      alignItems: 'center', 
+                                      gap: 1, 
+                                      border: 1, 
+                                      borderColor: 'divider', 
+                                      borderRadius: 5, 
+                                      px: 1.5, 
+                                      py: 0.5 
+                                  }}>
+                                      <Typography variant="body2" sx={{ color: STATUS_TEXT_COLORS[statusKey] }}>
+                                          {STATUS_MAP[statusKey]}
+                                      </Typography>
+                                      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                          {data.counts[statusKey]}
+                                      </Typography>
+                                  </Box>
+                              </Grid>
+                          ))}
+                      </Grid>
+                  </Paper>
+              );
+          })}
+        </Stack>
+      </Layout>    
+    </Suspense>  
+  );
 }
