@@ -8,7 +8,7 @@ import { MenuItem } from "primereact/menuitem";
 import { AdminOverviewCard } from "./[adminId]/AdminOverviewCard";
 import { UserOverviewCard } from "./[adminId]/user/[userId]/UserOverviewCard";
 import { AdminProvider } from "./_components/AdminContext";
-import Layout from "../../components/Layout";
+import Layout from "@/components/Layout";
 
 type AdminSwitchContextValue = {
   interWorkspaceEnabled: boolean;
@@ -60,7 +60,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         icon: "pi pi-shield",
         command: () => {
           setActiveView("admin");
-          router.push("/admin/1");
+          router.push("/admin/console/1");
         }
       },
       {
@@ -68,7 +68,7 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         icon: "pi pi-user",
         command: () => {
           setActiveView("user");
-          router.push("/admin/3/user/2?id=1&name=yar");
+          router.push("/admin/console/3/user/2?id=1&name=yar");
         }
       }
     ],

@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, Suspense } from "react";
-import {AdminLayout} from "../AdminLayout";
+import {AdminLayout} from "./AdminLayout";
 import { CircularProgress, Box } from "@mui/material";
 
 export default function AdminRouteLayout({ children }: { children: ReactNode }) {

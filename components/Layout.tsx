@@ -185,8 +185,8 @@ export default function Layout({ children }: LayoutProps) {
               <List component="div" disablePadding>
                 <ListItem disablePadding>
                   <ListItemButton 
-                    onClick={() => handleNavigation('/admin/1')}
-                    selected={pathname.startsWith('/admin') && !pathname.startsWith('/admin/inner')}
+                    onClick={() => handleNavigation('/admin/console')}
+                    selected={pathname.startsWith('/admin') && !pathname.startsWith('/admin/workspace')}
                     sx={{ ...listItemSx, pl: 4 }}
                   >
                     <ListItemIcon>
@@ -197,8 +197,8 @@ export default function Layout({ children }: LayoutProps) {
                 </ListItem>
                 <ListItem disablePadding>
                   <ListItemButton 
-                    onClick={() => handleNavigation('/admin/inner/2?id=1&name=yar')}
-                    selected={pathname.startsWith('/admin/inner')}
+                    onClick={() => handleNavigation('/admin/workspace/2?id=1&name=yar')}
+                    selected={pathname.startsWith('/admin/workspace')}
                     sx={{ ...listItemSx, pl: 4 }}
                   >
                     <ListItemIcon>
