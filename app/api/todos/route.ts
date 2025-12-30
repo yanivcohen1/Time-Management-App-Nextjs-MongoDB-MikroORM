@@ -85,36 +85,41 @@ async function handlerGET(request: NextRequest) {
 }
 
 async function handlerPOST(request: NextRequest) {
-  const userPayload = isAuthenticatedApp(request);
-  if (!userPayload) return Response.json({ message: 'Unauthorized' }, { status: 401 });
+  try {
+    const userPayload = isAuthenticatedApp(request);
+    if (!userPayload) return Response.json({ message: 'Unauthorized' }, { status: 401 });
 
-  const orm = await getORM();
-  const em = orm.em.fork();
+    const orm = await getORM();
+    const em = orm.em.fork();
 
-  const { title, description, dueTime, status, duration } = await request.json();
-  if (!title) {
-    return Response.json({ message: 'Title is required' }, { status: 400 });
-  }
-
-  const user = await em.findOne(User, { _id: new ObjectId(userPayload.userId) });
-  if (!user) {
-    return Response.json({ message: 'User not found' }, { status: 404 });
-  }
-
-  const todo = new Todo(title, user);
-  if (description) todo.description = description;
-  if (dueTime) {
-    const dueDate = new Date(dueTime);
-    if (isNaN(dueDate.getTime())) {
-      return Response.json({ message: 'Invalid dueTime format' }, { status: 400 });
+    const { title, description, dueTime, status, duration } = await request.json();
+    if (!title) {
+      return Response.json({ message: 'Title is required' }, { status: 400 });
     }
-    todo.dueTime = dueDate;
-  }
-  if (status) todo.status = status;
-  if (duration) todo.duration = duration;
 
-  await em.persistAndFlush(todo);
-  return Response.json(todo, { status: 201 });
+    const user = await em.findOne(User, { _id: new ObjectId(userPayload.userId) });
+    if (!user) {
+      return Response.json({ message: 'User not found' }, { status: 404 });
+    }
+
+    const todo = new Todo(title, user);
+    if (description) todo.description = description;
+    if (dueTime) {
+      const dueDate = new Date(dueTime);
+      if (isNaN(dueDate.getTime())) {
+        return Response.json({ message: 'Invalid dueTime format' }, { status: 400 });
+      }
+      todo.dueTime = dueDate;
+    }
+    if (status) todo.status = status;
+    if (duration) todo.duration = duration;
+
+    await em.persistAndFlush(todo);
+    return Response.json(todo, { status: 201 });
+  } catch (error) {
+    console.error('Error creating todo:', error);
+    return Response.json({ message: 'Error creating todo' }, { status: 500 });
+  }
 }
 
 export const GET = handlerGET;
