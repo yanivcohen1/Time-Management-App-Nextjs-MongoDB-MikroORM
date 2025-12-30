@@ -41,10 +41,31 @@ export default function Workload() {
 
   useEffect(() => {
     if (user) {
-      const params = selectedUserId ? { userId: selectedUserId, limit: 1000 } : { limit: 1000 };
-      api.get('/todos', { params }).then((res) => setTodos(res.data.items)).catch(() => {});
+      const fetch = async () => {
+        try {
+          const params = selectedUserId ? { userId: selectedUserId, limit: 1000 } : { limit: 1000 };
+          const res = await api.get('/todos', { params });
+          setTodos(res.data.items);
+        } catch {}
+      };
+      fetch();
     }
   }, [user, selectedUserId]);
+
+  useEffect(() => {
+    const handler = () => {
+      const fetch = async () => {
+        try {
+          const params = selectedUserId ? { userId: selectedUserId, limit: 1000 } : { limit: 1000 };
+          const res = await api.get('/todos', { params });
+          setTodos(res.data.items);
+        } catch {}
+      };
+      fetch();
+    };
+    window.addEventListener('refresh-todos', handler);
+    return () => window.removeEventListener('refresh-todos', handler);
+  }, [selectedUserId]);
 
   if (loading || !user) {
     return null;

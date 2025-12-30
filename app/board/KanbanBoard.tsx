@@ -61,6 +61,12 @@ const KanbanBoard = () => {
   }, [fetchTodos]);
 
   useEffect(() => {
+    const handler = () => fetchTodos();
+    window.addEventListener('refresh-todos', handler);
+    return () => window.removeEventListener('refresh-todos', handler);
+  }, [fetchTodos]);
+
+  useEffect(() => {
     const newColumns: Record<string, Todo[]> = {
       BACKLOG: [],
       PENDING: [],
