@@ -1,7 +1,7 @@
 import { expect, describe, it, beforeEach } from '@jest/globals';
-// import { createMocks } from 'node-mocks-http';
-// import handler from '../../../pages/api/todos/index';
-import { isAuthenticated } from '../../../lib/auth';
+import { NextRequest } from 'next/server';
+import { GET, POST } from '../../../app/api/todos/route';
+import { isAuthenticatedApp } from '../../../lib/auth';
 import { getORM } from '../../../lib/db';
 import { ObjectId } from '@mikro-orm/mongodb';
 
@@ -11,6 +11,13 @@ jest.mock('../../../lib/db', () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   withORM: (handler: any) => handler,
 }));
+jest.mock('@mikro-orm/core', () => {
+  const actual = jest.requireActual('@mikro-orm/core');
+  return {
+    ...actual,
+    serialize: jest.fn((obj) => obj),
+  };
+});
 jest.mock('../../../entities/Todo', () => ({
   Todo: class {},
 }));
@@ -18,7 +25,7 @@ jest.mock('../../../entities/User', () => ({
   User: class {},
 }));
 
-describe.skip('/api/todos', () => {
+describe('/api/todos', () => {
   const mockFind = jest.fn();
   const mockFindAndCount = jest.fn();
   const mockFindOne = jest.fn();
@@ -39,20 +46,18 @@ describe.skip('/api/todos', () => {
         fork: mockFork,
       },
     });
-    (isAuthenticated as jest.Mock).mockReturnValue({ userId: validUserId });
+    (isAuthenticatedApp as jest.Mock).mockReturnValue({ userId: validUserId });
   });
 
   it('GET returns todos', async () => {
-    const { req, res } = createMocks({
-      method: 'GET',
-    });
+    const request = new NextRequest('http://localhost/api/todos', { method: 'GET' });
 
     mockFindAndCount.mockResolvedValue([[{ id: '1', title: 'Test Todo' }], 1]);
 
-    await handler(req, res);
+    const response = await GET(request);
 
-    expect(res._getStatusCode()).toBe(200);
-    expect(JSON.parse(res._getData())).toEqual({ items: [{ id: '1', title: 'Test Todo' }], total: 1 });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ items: [{ id: '1', title: 'Test Todo' }], total: 1 });
     
     // Verify it was called with ObjectId
     expect(mockFindAndCount).toHaveBeenCalledWith(
@@ -63,44 +68,40 @@ describe.skip('/api/todos', () => {
   });
 
   it('POST creates a todo', async () => {
-    const { req, res } = createMocks({
+    const request = new NextRequest('http://localhost/api/todos', {
       method: 'POST',
-      body: {
+      body: JSON.stringify({
         title: 'New Todo',
         description: 'Desc',
         status: 'BACKLOG',
-      },
+      }),
     });
 
     mockFindOne.mockResolvedValue({ id: validUserId }); // Mock User found
 
-    await handler(req, res);
+    const response = await POST(request);
 
-    expect(res._getStatusCode()).toBe(201);
+    expect(response.status).toBe(201);
     expect(mockPersistAndFlush).toHaveBeenCalled();
   });
 
   it('returns 401 if not authenticated', async () => {
-    (isAuthenticated as jest.Mock).mockReturnValue(null);
+    (isAuthenticatedApp as jest.Mock).mockReturnValue(null);
 
-    const { req, res } = createMocks({
-      method: 'GET',
-    });
+    const request = new NextRequest('http://localhost/api/todos', { method: 'GET' });
 
-    await handler(req, res);
+    await expect(GET(request)).rejects.toThrow('Unauthorized');
   });
 
   it('GET returns all todos for admin', async () => {
-    (isAuthenticated as jest.Mock).mockReturnValue({ userId: validUserId, role: 'admin' });
-    const { req, res } = createMocks({
-      method: 'GET',
-    });
+    (isAuthenticatedApp as jest.Mock).mockReturnValue({ userId: validUserId, role: 'admin' });
+    const request = new NextRequest('http://localhost/api/todos', { method: 'GET' });
 
     mockFindAndCount.mockResolvedValue([[{ id: '1', title: 'Test Todo' }], 1]);
 
-    await handler(req, res);
+    const response = await GET(request);
 
-    expect(res._getStatusCode()).toBe(200);
+    expect(response.status).toBe(200);
     expect(mockFindAndCount).toHaveBeenCalledWith(
       expect.anything(), 
       {}, 

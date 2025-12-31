@@ -8,10 +8,41 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  testEnvironment: 'jest-environment-jsdom',
-  transformIgnorePatterns: [
-    '/node_modules/(?!bson|mongodb|@mikro-orm)/',
+  projects: [
+    {
+      displayName: 'client',
+      setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+      testEnvironment: 'jest-environment-jsdom',
+      testPathIgnorePatterns: [
+        '<rootDir>/.next/',
+        '<rootDir>/node_modules/',
+        '<rootDir>/__tests__/api',
+      ],
+      transform: {
+        '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+      },
+      transformIgnorePatterns: [
+        '/node_modules/(?!bson|mongodb|@mikro-orm)/',
+      ],
+    },
+    {
+      displayName: 'api',
+      testEnvironment: 'node',
+      testMatch: ['<rootDir>/__tests__/api/**/*.test.ts'],
+      testPathIgnorePatterns: [
+        '<rootDir>/.next/',
+        '<rootDir>/node_modules/',
+      ],
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/$1',
+      },
+      transform: {
+        '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: [['@babel/preset-env', { targets: { node: 'current' } }], '@babel/preset-typescript'] }],
+      },
+      transformIgnorePatterns: [
+        '/node_modules/(?!bson|mongodb|@mikro-orm|whatwg-url)/',
+      ],
+    },
   ],
 }
 

@@ -1,16 +1,25 @@
 import { expect, describe, it, beforeEach } from '@jest/globals';
-// import handler from '../../../pages/api/todos/[id]';
-import { isAuthenticated } from '../../../lib/auth';
+import { NextRequest } from 'next/server';
+import { PUT, DELETE } from '../../../app/api/todos/[id]/route';
+import { isAuthenticatedApp } from '../../../lib/auth';
+import { getORM } from '../../../lib/db';
 
 jest.mock('../../../lib/auth');
 jest.mock('../../../lib/db', () => ({
   getORM: jest.fn(),
 }));
+jest.mock('@mikro-orm/core', () => {
+  const actual = jest.requireActual('@mikro-orm/core');
+  return {
+    ...actual,
+    serialize: jest.fn((obj) => obj),
+  };
+});
 jest.mock('../../../entities/Todo', () => ({
   Todo: class {},
 }));
 
-describe.skip('/api/todos/[id]', () => {
+describe('/api/todos/[id]', () => {
   const mockFindOne = jest.fn();
   const mockFlush = jest.fn();
   const mockRemoveAndFlush = jest.fn();
@@ -30,21 +39,20 @@ describe.skip('/api/todos/[id]', () => {
         fork: mockFork,
       },
     });
-    (isAuthenticated as jest.Mock).mockReturnValue({ userId: validUserId, role: 'user' });
+    (isAuthenticatedApp as jest.Mock).mockReturnValue({ userId: validUserId, role: 'user' });
   });
 
   it('PUT updates todo for owner', async () => {
-    const { req, res } = createMocks({
+    const request = new NextRequest('http://localhost/api/todos/todo-123', {
       method: 'PUT',
-      query: { id: todoId },
-      body: { title: 'Updated Title' },
+      body: JSON.stringify({ title: 'Updated Title' }),
     });
 
     mockFindOne.mockResolvedValue({ id: todoId, title: 'Old Title' });
 
-    await handler(req, res);
+    const response = await PUT(request, { params: Promise.resolve({ id: todoId }) });
 
-    expect(res._getStatusCode()).toBe(200);
+    expect(response.status).toBe(200);
     expect(mockFindOne).toHaveBeenCalledWith(
       expect.anything(),
       { id: todoId, owner: validUserId }
@@ -53,22 +61,38 @@ describe.skip('/api/todos/[id]', () => {
   });
 
   it('PUT updates todo for admin', async () => {
-    (isAuthenticated as jest.Mock).mockReturnValue({ userId: validUserId, role: 'admin' });
-    const { req, res } = createMocks({
+    (isAuthenticatedApp as jest.Mock).mockReturnValue({ userId: validUserId, role: 'admin' });
+    const request = new NextRequest('http://localhost/api/todos/todo-123', {
       method: 'PUT',
-      query: { id: todoId },
-      body: { title: 'Updated Title' },
+      body: JSON.stringify({ title: 'Updated Title' }),
     });
 
     mockFindOne.mockResolvedValue({ id: todoId, title: 'Old Title' });
 
-    await handler(req, res);
+    const response = await PUT(request, { params: Promise.resolve({ id: todoId }) });
 
-    expect(res._getStatusCode()).toBe(200);
+    expect(response.status).toBe(200);
     expect(mockFindOne).toHaveBeenCalledWith(
       expect.anything(),
       { id: todoId }
     );
     expect(mockFlush).toHaveBeenCalled();
+  });
+
+  it('DELETE removes todo for owner', async () => {
+    const request = new NextRequest('http://localhost/api/todos/todo-123', {
+      method: 'DELETE',
+    });
+
+    mockFindOne.mockResolvedValue({ id: todoId, title: 'Old Title' });
+
+    const response = await DELETE(request, { params: Promise.resolve({ id: todoId }) });
+
+    expect(response.status).toBe(200);
+    expect(mockFindOne).toHaveBeenCalledWith(
+      expect.anything(),
+      { id: todoId, owner: validUserId }
+    );
+    expect(mockRemoveAndFlush).toHaveBeenCalled();
   });
 });
