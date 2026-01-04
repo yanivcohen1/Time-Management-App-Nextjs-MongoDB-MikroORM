@@ -47,8 +47,8 @@ export async function handlerPUT(request: NextRequest, { params }: { params: Pro
   return NextResponse.json(serialize(todo));
 }
 
-export async function handlerDELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export async function handlerDELETE(request: NextRequest, context : { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   const userPayload = isAuthenticatedApp(request);
   if (!userPayload) throw new ApiError(401, 'Unauthorized');
 
