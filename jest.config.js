@@ -8,6 +8,16 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
+  coverageReporters: ['json', 'lcov', 'text', 'clover', 'html'],
+  collectCoverageFrom: [
+    'app/**/*.{js,jsx,ts,tsx}',
+    'components/**/*.{js,jsx,ts,tsx}',
+    'lib/**/*.{js,jsx,ts,tsx}',
+    'entities/**/*.{js,jsx,ts,tsx}',
+    '!**/node_modules/**',
+    '!**/.next/**',
+    '!**/cypress/**',
+  ],
   projects: [
     {
       displayName: 'client',
