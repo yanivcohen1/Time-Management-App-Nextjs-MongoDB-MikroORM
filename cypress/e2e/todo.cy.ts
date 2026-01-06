@@ -50,12 +50,26 @@ describe('Agile Tasks', () => {
     cy.get('input[name="password"]').type('ChangeMe123!');
     cy.get('button[type="submit"]').click();
 
-    // Test the API endpoint
-    cy.request('GET', '/api/todos?limit=1000').then((response) => {
-      expect(response.status).to.eq(200);
-      expect(response.body).to.have.property('items');
-      expect(response.body).to.have.property('total');
-      expect(response.body.items).to.be.an('array');
+    // Verify login success before calling API
+    cy.url().should('include', '/');
+    cy.contains('Agile menu').should('be.visible');
+
+    // Test the API endpoint with token from localStorage
+    cy.window().then((win) => {
+      const token = win.localStorage.getItem('token');
+      expect(token).to.not.be.null; 
+      cy.request({
+        method: 'GET',
+        url: '/api/todos?limit=1000',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.have.property('items');
+        expect(response.body).to.have.property('total');
+        expect(response.body.items).to.be.an('array');
+      });
     });
   });
 });
