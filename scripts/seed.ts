@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { MikroORM } from '@mikro-orm/core';
 import { MongoDriver } from '@mikro-orm/mongodb';
 import config from '../mikro-orm.config';
-import { seedDatabase } from '../lib/seeder';
+import { seedDatabase } from '../src/lib/seeder';
 import path from 'path';
 import dotenv from 'dotenv';
 

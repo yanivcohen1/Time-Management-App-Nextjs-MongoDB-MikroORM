@@ -1,6 +1,6 @@
 import { MikroORM } from '@mikro-orm/core';
 import { MongoDriver, MongoEntityManager } from '@mikro-orm/mongodb';
-import config from '../mikro-orm.config';
+import config from '../../mikro-orm.config';
 import { handleApiError } from "@/lib/http";
 
 // Global cache to prevent multiple connections in dev

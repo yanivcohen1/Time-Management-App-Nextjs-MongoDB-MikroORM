@@ -22,7 +22,7 @@
     "emitDecoratorMetadata": true,
     "paths": {
       "@/*": [
-        "./*"
+        "./src/*"
       ]
     },
     "types": [

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { defineConfig } from '@mikro-orm/mongodb';
-import { User } from './entities/User';
-import { Todo } from './entities/Todo';
+import { User } from './src/entities/User';
+import { Todo } from './src/entities/Todo';
 import { ReflectMetadataProvider } from '@mikro-orm/core';
 
 export default defineConfig({
