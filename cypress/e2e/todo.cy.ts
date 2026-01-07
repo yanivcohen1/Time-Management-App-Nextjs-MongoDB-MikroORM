@@ -57,7 +57,7 @@ describe('Agile Tasks', () => {
     // Test the API endpoint with token from localStorage
     cy.window().then((win) => {
       const token = win.localStorage.getItem('token');
-      expect(token).to.not.be.null; 
+      cy.wrap(token).should('not.be.null');
       cy.request({
         method: 'GET',
         url: '/api/todos?limit=1000',
