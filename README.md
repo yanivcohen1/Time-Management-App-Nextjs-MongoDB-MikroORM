@@ -13,7 +13,7 @@ A full-stack Agile Tasks application built with Next.js, MikroORM, MongoDB, and 
 *   **Drag & Drop**: `@hello-pangea/dnd`
 *   **Authentication**: JWT (JSON Web Tokens) with `bcryptjs`
 *   **Testing**:
-    *   Unit/Integration: [Jest](https://jestjs.io/) & [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+    *   Unit/Integration: [Vitest](https://vitest.dev/) & [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
     *   End-to-End (E2E): [Cypress](https://www.cypress.io/)
 *   **Package Manager**: [pnpm](https://pnpm.io/)
 
@@ -78,8 +78,8 @@ todo-app-nextjs/
 ├── temp/                # Temporary files
 ├── cypress.config.ts    # Cypress configuration
 ├── eslint.config.mjs    # ESLint configuration
-├── jest.config.js       # Jest configuration
-├── jest.setup.js        # Jest setup
+├── vitest.config.ts     # Vitest configuration
+├── vitest.setup.ts      # Vitest setup
 ├── mikro-orm.config.ts  # MikroORM configuration
 ├── next-env.d.ts        # Next.js type definitions
 ├── next.config.ts       # Next.js configuration
@@ -159,7 +159,7 @@ The application will be available at `http://localhost:3000` (or the port specif
 
 ### Running Tests
 
-**Unit & Integration Tests (Jest):**
+**Unit & Integration Tests (Vitest):**
 
 ```bash
 pnpm test
@@ -189,9 +189,10 @@ pnpm lint
 | `pnpm build` | Builds the application for production. |
 | `pnpm start` | Starts the production server. |
 | `pnpm lint` | Runs ESLint to check for code quality issues. |
-| `pnpm test` | Runs unit and integration tests using Jest. |
+| `pnpm test` | Runs unit and integration tests using Vitest. |
+| `pnpm test:coverage` | Runs unit and integration tests with coverage reporting using Vitest. |
 | `pnpm test:e2e` | Runs end-to-end tests using Cypress (headless mode). |
-| `pnpm seed` | Seeds the database with initial data. |
+| `pnpm seed:db` | Seeds the database with initial data. |
 | `pnpm docker-compose:up` | Starts the application and database with Docker Compose. |
 | `pnpm docker-compose:down` | Stops the Docker containers and removes volumes. |
 | `pnpm docker-compose:seed` | Manually triggers the database seeder container. |

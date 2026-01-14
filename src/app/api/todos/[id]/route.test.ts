@@ -1,24 +1,24 @@
-import { expect, describe, it, beforeEach } from '@jest/globals';
+import { expect, describe, it, beforeEach, vi } from 'vitest';
 import { NextRequest } from 'next/server';
 import { PUT, DELETE } from './route';
 import { isAuthenticatedApp } from '@/lib/auth';
 import { getORM } from '@/lib/db';
 import { ObjectId } from '@mikro-orm/mongodb';
 
-jest.mock('@/lib/auth');
-jest.mock('@/lib/db', () => ({
-  getORM: jest.fn(),
+vi.mock('@/lib/auth');
+vi.mock('@/lib/db', () => ({
+  getORM: vi.fn(),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleError: (handler: any) => handler,
 }));
-jest.mock('@mikro-orm/core', () => {
-  const actual = jest.requireActual('@mikro-orm/core');
+vi.mock('@mikro-orm/core', async () => {
+  const actual = await vi.importActual<typeof import('@mikro-orm/core')>('@mikro-orm/core');
   return {
     ...actual,
-    serialize: jest.fn((obj) => obj),
+    serialize: vi.fn((obj) => obj),
   };
 });
-jest.mock('@/entities/Todo', () => ({
+vi.mock('@/entities/Todo', () => ({
   Todo: class {},
   TodoStatus: {
     BACKLOG: 'BACKLOG',
@@ -29,10 +29,10 @@ jest.mock('@/entities/Todo', () => ({
 }));
 
 describe('/api/todos/[id]', () => {
-  const mockFindOne = jest.fn();
-  const mockFlush = jest.fn();
-  const mockRemoveAndFlush = jest.fn();
-  const mockFork = jest.fn(() => ({
+  const mockFindOne = vi.fn();
+  const mockFlush = vi.fn();
+  const mockRemoveAndFlush = vi.fn();
+  const mockFork = vi.fn(() => ({
     findOne: mockFindOne,
     flush: mockFlush,
     removeAndFlush: mockRemoveAndFlush,
@@ -42,13 +42,13 @@ describe('/api/todos/[id]', () => {
   const todoId = '507f1f77bcf86cd799439012';
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    (getORM as jest.Mock).mockResolvedValue({
+    vi.clearAllMocks();
+    vi.mocked(getORM).mockResolvedValue({
       em: {
         fork: mockFork,
-      },
-    });
-    (isAuthenticatedApp as jest.Mock).mockReturnValue({ userId: validUserId, role: 'user' });
+      } as unknown,
+    } as unknown as Awaited<ReturnType<typeof getORM>>);
+    vi.mocked(isAuthenticatedApp).mockReturnValue({ userId: validUserId, role: 'user' });
   });
 
   it('PUT updates todo for owner', async () => {
@@ -70,7 +70,7 @@ describe('/api/todos/[id]', () => {
   });
 
   it('PUT updates todo for admin', async () => {
-    (isAuthenticatedApp as jest.Mock).mockReturnValue({ userId: validUserId, role: 'admin' });
+    vi.mocked(isAuthenticatedApp).mockReturnValue({ userId: validUserId, role: 'admin' });
     const request = new NextRequest('http://localhost/api/todos/todo-123', {
       method: 'PUT',
       body: JSON.stringify({ title: 'Updated Title' }),
@@ -106,7 +106,7 @@ describe('/api/todos/[id]', () => {
   });
 
   it('DELETE removes todo for admin', async () => {
-    (isAuthenticatedApp as jest.Mock).mockReturnValue({ userId: validUserId, role: 'admin' });
+    vi.mocked(isAuthenticatedApp).mockReturnValue({ userId: validUserId, role: 'admin' });
     const request = new NextRequest('http://localhost/api/todos/todo-123', {
       method: 'DELETE',
     });
@@ -131,7 +131,7 @@ describe('/api/todos/[id]', () => {
 
     mockFindOne.mockResolvedValue(null);
 
-    await expect(PUT(request, { params: Promise.resolve({ id: '507f1f77bcf86cd799439013' }) })).rejects.toThrow('Todo not found');
+    await expect(PUT(request, { params: Promise.resolve({ id: '507f1f77bcf86cd799439011' }) })).rejects.toThrow('Todo not found');
   });
 
   it('DELETE returns 404 if todo not found', async () => {
@@ -141,6 +141,6 @@ describe('/api/todos/[id]', () => {
 
     mockFindOne.mockResolvedValue(null);
 
-    await expect(DELETE(request, { params: Promise.resolve({ id: '507f1f77bcf86cd799439013' }) })).rejects.toThrow('Todo not found');
+    await expect(DELETE(request, { params: Promise.resolve({ id: '507f1f77bcf86cd799439011' }) })).rejects.toThrow('Todo not found');
   });
 });

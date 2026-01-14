@@ -1,30 +1,29 @@
-import { expect, describe, it, beforeEach, jest } from '@jest/globals';
+import { expect, describe, it, beforeEach, vi } from 'vitest';
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/jest-globals';
 import TodoModal from './TodoModal';
 import api from '../lib/axios';
 
 // Mock dependencies
-jest.mock('../lib/axios');
-jest.mock('next/navigation', () => ({
+vi.mock('../lib/axios');
+vi.mock('next/navigation', () => ({
   useRouter: () => ({
-    push: jest.fn(),
-    reload: jest.fn(),
+    push: vi.fn(),
+    reload: vi.fn(),
   }),
 }));
-jest.mock('notistack', () => ({
+vi.mock('notistack', () => ({
   useSnackbar: () => ({
-    enqueueSnackbar: jest.fn(),
+    enqueueSnackbar: vi.fn(),
   }),
 }));
 
 describe('TodoModal', () => {
-  const mockOnClose = jest.fn();
-  const mockOnSuccess = jest.fn();
+  const mockOnClose = vi.fn();
+  const mockOnSuccess = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders correctly when open', () => {
@@ -43,7 +42,7 @@ describe('TodoModal', () => {
 
   it('submits the form correctly', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    jest.mocked(api.post).mockResolvedValue({ data: {} } as any);
+    vi.mocked(api.post).mockResolvedValue({ data: {} } as any);
 
     render(
       <TodoModal

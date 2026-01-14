@@ -15,7 +15,7 @@
 			"group": "test"
 		},
 		{
-			"label": "Run Jest Tests",
+			"label": "Run Vitest Tests",
 			"type": "shell",
 			"command": "pnpm",
 			"args": [
@@ -24,8 +24,7 @@
 			"group": {
 				"kind": "test",
 				"isDefault": true
-			},
-			"problemMatcher": "$jest-hint"
+			}
 		}
 	]
 }

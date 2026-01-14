@@ -1,6 +1,6 @@
 {
-  "jest.enable": true,
-  "jest.jestCommandLine": "pnpm jest",
+  "jest.enable": false,
+  "vitest.enable": true,
   "playwright.testConfig": "${workspaceFolder}/playwright.config.ts",
   "cypressTestExplorer.configFilePath": "cypress.config.ts",
   "cypressTestExplorer.projectPath": "",
