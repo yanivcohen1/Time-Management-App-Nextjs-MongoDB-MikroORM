@@ -190,6 +190,7 @@ pnpm lint
 | `pnpm start` | Starts the production server. |
 | `pnpm lint` | Runs ESLint to check for code quality issues. |
 | `pnpm test` | Runs unit and integration tests using Vitest. |
+| `pnpm test:watch` | Runs unit and integration tests using Vitest in watch mode. |
 | `pnpm test:coverage` | Runs unit and integration tests with coverage reporting using Vitest. |
 | `pnpm test:e2e` | Runs end-to-end tests using Cypress (headless mode). |
 | `pnpm seed:db` | Seeds the database with initial data. |
