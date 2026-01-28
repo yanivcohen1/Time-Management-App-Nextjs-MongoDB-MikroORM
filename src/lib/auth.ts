@@ -57,12 +57,18 @@ export const isAuthenticatedApp = (request: NextRequest) => {
   const token = getAuthTokenApp(request);
   if (!token) {
     throw new ApiError(401, 'Unauthorized');
-    return null;
   }
   const payload = verifyToken(token);
   if (!payload) {
     throw new ApiError(401, 'Unauthorized');
-    return null;
+  }
+  return payload;
+};
+
+export const isAdmin = (request: NextRequest) => {
+  const payload = isAuthenticatedApp(request);
+  if (payload?.role !== 'admin') {
+    throw new ApiError(403, 'Forbidden admin access only');
   }
   return payload;
 };

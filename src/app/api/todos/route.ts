@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getORM, handleError } from '@/lib/db';
 import { Todo, TodoStatus } from '@/entities/Todo';
-import { isAuthenticatedApp } from '@/lib/auth';
+import { isAuthenticatedApp, isAdmin } from '@/lib/auth';
 import { User } from '@/entities/User';
 import { ObjectId } from '@mikro-orm/mongodb';
 import { FilterQuery, serialize } from '@mikro-orm/core';
@@ -41,6 +41,7 @@ async function handlerGET(request: NextRequest) {
   const offset = pageNum * limitNum;
 
   if (userPayload.role === 'admin') {
+    isAdmin(request);
     if (userId) {
       filter.owner = new ObjectId(userId);
     }
