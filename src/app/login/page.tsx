@@ -6,7 +6,7 @@ import api from '../../lib/axios';
 import { useAuth } from '../../context/AuthContext';
 import { useSnackbar } from 'notistack';
 import Link from 'next/link';
-import {userResponse} from '@/app/api/auth/login/route';
+import {postParams , postResponse} from '@/app/api/auth/login/route';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -17,8 +17,8 @@ export default function Login() {
   const handleLogin = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     try {
-      const res = await api.post('/auth/login', { email, password });
-      const user: userResponse = res.data;
+      const res = await api.post('/auth/login', { email, password } as postParams);
+      const user: postResponse = res.data;
       login(user.token, user.user);
       enqueueSnackbar('Login successful', { variant: 'success' });
     } catch {

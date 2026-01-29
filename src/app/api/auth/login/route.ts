@@ -4,21 +4,26 @@ import { User } from '@/entities/User';
 import { comparePassword } from '@/lib/password';
 import { signToken } from '@/lib/auth';
 
-export interface user {
+interface user {
         id: string,
         name: string,
         email: string,
         role: User["role"],
       }
 
-export interface userResponse{
+export interface postResponse{
         token: string,
         user: user,
       }
 
+export interface postParams{
+        email: string,
+        password: string,
+      }
+
 export async function handlerPOST(request: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const { email, password } = await request.json() as postParams;
 
     if (!email || !password) {
       return Response.json({ message: 'Email and password are required' }, { status: 400 });
@@ -49,7 +54,7 @@ export async function handlerPOST(request: NextRequest) {
           email: user.email,
           role: user.role,
         },
-      } as userResponse);
+      } as postResponse);
   } catch (error) {
     console.error('Login error:', error);
     return Response.json({ message: 'Internal server error' }, { status: 500 });
