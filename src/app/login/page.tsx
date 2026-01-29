@@ -7,6 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useSnackbar } from 'notistack';
 import Link from 'next/link';
 import {loginPostParams, loginPostResponse} from '@/app/api/auth/login/route';
+import { seedPostResponse } from '@/app/api/auth/seed/route';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -40,8 +41,8 @@ export default function Login() {
 
   const handleSeed = async () => {
     try {
-      await api.post('/auth/seed');
-      enqueueSnackbar('Database seeded with demo data', { variant: 'success' });
+      const res: seedPostResponse = (await api.post('/auth/seed')).data;
+      enqueueSnackbar(res.message || 'Database seeded with demo data', { variant: 'success' });
     } catch {
       // Handled by interceptor
     }

@@ -14,6 +14,8 @@ import {
 import api from '../lib/axios';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
+import { todosPostParams } from '@/app/api/todos/route';
+import { todosIdPutParams } from '@/app/api/todos/[id]/route';
 
 interface Todo {
   id: string;
@@ -67,10 +69,10 @@ const TodoModal = ({ open, onClose, todo, onSuccess }: TodoModalProps) => {
       };
 
       if (todo) {
-        await api.put(`/todos/${todo.id}`, payload);
+        await api.put(`/todos/${todo.id}`, payload as todosIdPutParams);
         enqueueSnackbar('Todo updated', { variant: 'success' });
       } else {
-        await api.post('/todos', payload);
+        await api.post('/todos', payload as todosPostParams);
         enqueueSnackbar('Todo created', { variant: 'success' });
       }
       onClose();

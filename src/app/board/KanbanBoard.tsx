@@ -7,6 +7,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import api from '@/lib/axios';
 import TodoModal from '@/components/TodoModal';
 import { useAuth } from '@/context/AuthContext';
+import { todosGetParams, todosGetResponse } from '@/app/api/todos/route';
+import { todosIdPutParams } from '@/app/api/todos/[id]/route';
 
 interface Todo {
   id: string;
@@ -47,9 +49,9 @@ const KanbanBoard = () => {
 
   const fetchTodos = React.useCallback(async () => {
     try {
-      const params = selectedUserId ? { userId: selectedUserId, limit: 1000 } : { limit: 1000 };
-      const res = await api.get('/todos', { params });
-      setTodos(res.data.items);
+      const params: todosGetParams = selectedUserId ? { userId: selectedUserId, limit: '1000' } : { limit: '1000' };
+      const res: todosGetResponse = (await api.get('/todos', { params })).data;
+      setTodos(res.items);
     } catch (error) {
       console.error(error);
     }
@@ -118,9 +120,8 @@ const KanbanBoard = () => {
 
         // API Call
         try {
-            await api.put(`/todos/${draggableId}`, { status: destination.droppableId });
-            // Refresh to ensure sync? Or just trust optimistic.
-            // fetchTodos(); 
+            await api.put(`/todos/${draggableId}`, { status: destination.droppableId } as todosIdPutParams);
+            // Success
         } catch {
             // Revert on error (simplified: just fetch)
             fetchTodos();

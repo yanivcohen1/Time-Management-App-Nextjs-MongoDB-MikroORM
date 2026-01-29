@@ -30,6 +30,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import TodoModal from '../../components/TodoModal';
 import { useSnackbar } from 'notistack';
+import { todosGetParams, todosGetResponse } from '@/app/api/todos/route';
+import { todosIdDeleteResponse } from '@/app/api/todos/[id]/route';
 
 interface Todo {
   id: string;
@@ -103,9 +105,9 @@ export default function TodosPage() {
       params.order = order;
       params._t = Date.now().toString(); // Avoid caching
 
-      const res = await api.get('/todos', { params });
-      setTodos(res.data.items);
-      setTotal(res.data.total);
+      const res: todosGetResponse = (await api.get('/todos', { params: params as todosGetParams })).data;
+      setTodos(res.items);
+      setTotal(res.total);
     } catch (error) {
       console.error(error);
     }
@@ -146,8 +148,8 @@ export default function TodosPage() {
   const confirmDelete = async () => {
     if (deleteId) {
       try {
-        await api.delete(`/todos/${deleteId}`);
-        enqueueSnackbar('Todo deleted', { variant: 'success' });
+        const res: todosIdDeleteResponse = (await api.delete(`/todos/${deleteId}`)).data;
+        enqueueSnackbar(res.message || 'Todo deleted', { variant: 'success' });
         fetchTodos();
       } catch {
         // Handled by interceptor

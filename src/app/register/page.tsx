@@ -5,6 +5,7 @@ import { Box, Button, Container, TextField, Typography, Paper } from '@mui/mater
 import api from '../../lib/axios';
 import { useSnackbar } from 'notistack';
 import Link from 'next/link';
+import { registerPostParams, registerPostResponse } from '@/app/api/auth/register/route';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -15,8 +16,8 @@ export default function Register() {
   const handleRegister = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     try {
-      await api.post('/auth/register', { name, email, password });
-      enqueueSnackbar('Registration successful! Please log in.', { variant: 'success' });
+      const res: registerPostResponse = (await api.post('/auth/register', { name, email, password } as registerPostParams)).data;
+      enqueueSnackbar(res.message || 'Registration successful! Please log in.', { variant: 'success' });
       // Optionally redirect to login
       window.location.href = '/login';
     } catch {

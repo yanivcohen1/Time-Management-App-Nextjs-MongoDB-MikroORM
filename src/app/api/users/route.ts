@@ -2,6 +2,15 @@ import { getORM, handleError } from '@/lib/db';
 import { User } from '@/entities/User';
 import { isAuthenticatedApp } from '@/lib/auth';
 
+export type usersGetResponse = {
+  id: string;
+  name: string;
+  email: string;
+  role: User['role'];
+  createdAt: Date;
+  updatedAt: Date;
+}[];
+
 async function handlerGET() {
   const userPayload = await isAuthenticatedApp();
   if (!userPayload) return Response.json({ message: 'Unauthorized' }, { status: 401 });

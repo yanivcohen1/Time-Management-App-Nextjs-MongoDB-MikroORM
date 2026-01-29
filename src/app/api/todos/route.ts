@@ -7,6 +7,51 @@ import { ObjectId } from '@mikro-orm/mongodb';
 import { FilterQuery, serialize } from '@mikro-orm/core';
 import { ApiError } from "@/lib/http"
 
+export interface todosGetParams {
+  userId?: string | null;
+  status?: string | null;
+  title?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  page?: string | null;
+  limit?: string | null;
+  orderBy?: string | null;
+  order?: string | null;
+}
+
+export interface todosGetResponse {
+  items: Array<{
+    id: string;
+    title: string;
+    description?: string;
+    status: string;
+    dueTime?: string;
+    duration?: number;
+    owner: { id: string, name: string };
+    createdAt: string;
+    updatedAt: string;
+  }>;
+  total: number;
+}
+
+export interface todosPostParams {
+  title: string;
+  description?: string;
+  dueTime?: string | Date;
+  status?: TodoStatus;
+  duration?: number;
+}
+
+export type todosPostResponse = {
+  id: string;
+  title: string;
+  description?: string;
+  status: string;
+  owner: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 async function handlerGET(request: NextRequest) {
   const userPayload = await isAuthenticatedApp();
   if (!userPayload) 
@@ -108,7 +153,7 @@ async function handlerPOST(request: NextRequest) {
   const orm = await getORM();
   const em = orm.em.fork();
 
-  const { title, description, dueTime, status, duration } = await request.json();
+  const { title, description, dueTime, status, duration } = await request.json() as todosPostParams;
   if (!title) {
     throw new ApiError(400, 'Title is required');
   }

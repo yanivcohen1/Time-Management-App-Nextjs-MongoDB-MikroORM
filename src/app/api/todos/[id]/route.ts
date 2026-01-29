@@ -1,10 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getORM, handleError } from '@/lib/db';
-import { Todo } from '@/entities/Todo';
 import { isAuthenticatedApp } from '@/lib/auth';
 import { ApiError } from '@/lib/http';
 import { FilterQuery, serialize } from '@mikro-orm/core';
 import { ObjectId } from '@mikro-orm/mongodb';
+import { Todo, TodoStatus } from '@/entities/Todo';
+
+export interface todosIdPutParams {
+  title?: string;
+  description?: string;
+  status?: TodoStatus;
+  dueTime?: string | Date | null;
+  duration?: number;
+}
+
+export type todosIdPutResponse = {
+  id: string;
+  title: string;
+  description?: string;
+  status: string;
+  owner: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export interface todosIdDeleteResponse {
+  message: string;
+}
 
 export async function handlerPUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -25,7 +47,7 @@ export async function handlerPUT(request: NextRequest, { params }: { params: Pro
     throw new ApiError(404, 'Todo not found');
   }
 
-  const { title, description, status, dueTime, duration } = await request.json();
+  const { title, description, status, dueTime, duration } = await request.json() as todosIdPutParams;
 
   if (title !== undefined) todo.title = title;
   if (description !== undefined) todo.description = description;

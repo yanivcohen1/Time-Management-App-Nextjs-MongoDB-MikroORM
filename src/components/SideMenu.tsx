@@ -44,6 +44,7 @@ import { useAuth } from '../context/AuthContext';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import TodoModal from './TodoModal';
 import api from '../lib/axios';
+import { usersGetResponse } from '@/app/api/users/route';
 
 const drawerWidth = 240;
 
@@ -66,7 +67,7 @@ export default function Layout({ children }: LayoutProps) {
 
   React.useEffect(() => {
     if (user?.role === 'admin') {
-      api.get('/users').then(res => setUsers(res.data)).catch(console.error);
+      api.get('/users').then(res => setUsers(res.data as usersGetResponse)).catch(console.error);
     }
   }, [user]);
 

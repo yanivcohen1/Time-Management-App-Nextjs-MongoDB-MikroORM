@@ -3,9 +3,19 @@ import { getORM, handleError } from '@/lib/db';
 import { User } from '@/entities/User';
 import { hashPassword } from '@/lib/password';
 
+export interface registerPostParams {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface registerPostResponse {
+  message: string;
+}
+
 export async function handlerPOST(request: NextRequest) {
   try {
-    const { name, email, password } = await request.json();
+    const { name, email, password } = await request.json() as registerPostParams;
 
     if (!name || !email || !password) {
       return Response.json({ message: 'Name, email, and password are required' }, { status: 400 });

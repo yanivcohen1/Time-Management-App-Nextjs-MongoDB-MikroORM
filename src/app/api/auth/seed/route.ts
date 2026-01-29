@@ -2,6 +2,10 @@ import { NextRequest } from 'next/server';
 import { getORM } from '@/lib/db';
 import { seedDatabase } from '@/lib/seeder';
 
+export interface seedPostResponse {
+  message: string;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function POST(_request: NextRequest) {
   try {

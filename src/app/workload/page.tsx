@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import api from '../../lib/axios';
 import { Box, Typography, Paper, Grid, Chip, Stack } from '@mui/material';
+import { todosGetParams, todosGetResponse } from '@/app/api/todos/route';
 
 interface Todo {
   id: string;
@@ -43,9 +44,9 @@ export default function WorkloadPage() {
     if (user) {
       const fetch = async () => {
         try {
-          const params = selectedUserId ? { userId: selectedUserId, limit: 1000 } : { limit: 1000 };
-          const res = await api.get('/todos', { params });
-          setTodos(res.data.items);
+          const params: todosGetParams = selectedUserId ? { userId: selectedUserId, limit: '1000' } : { limit: '1000' };
+          const res: todosGetResponse = (await api.get('/todos', { params })).data;
+          setTodos(res.items);
         } catch {}
       };
       fetch();
@@ -56,9 +57,9 @@ export default function WorkloadPage() {
     const handler = () => {
       const fetch = async () => {
         try {
-          const params = selectedUserId ? { userId: selectedUserId, limit: 1000 } : { limit: 1000 };
-          const res = await api.get('/todos', { params });
-          setTodos(res.data.items);
+          const params: todosGetParams = selectedUserId ? { userId: selectedUserId, limit: '1000' } : { limit: '1000' };
+          const res: todosGetResponse = (await api.get('/todos', { params })).data;
+          setTodos(res.items);
         } catch {}
       };
       fetch();
