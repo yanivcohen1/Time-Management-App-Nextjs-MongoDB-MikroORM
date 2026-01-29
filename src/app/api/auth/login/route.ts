@@ -4,7 +4,7 @@ import { User } from '@/entities/User';
 import { comparePassword } from '@/lib/password';
 import { signToken } from '@/lib/auth';
 
-export interface Iuser {
+export interface user {
         id: string,
         name: string,
         email: string,
@@ -13,7 +13,7 @@ export interface Iuser {
 
 export interface userResponse{
         token: string,
-        user: Iuser,
+        user: user,
       }
 
 export async function handlerPOST(request: NextRequest) {
@@ -40,19 +40,16 @@ export async function handlerPOST(request: NextRequest) {
     }
 
     const token = signToken({ userId: user.id, role: user.role });
-
-    const userRet: Iuser = {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      };
-
-    const userResponse: userResponse = {
+    
+    return Response.json({
         token,
-        user: userRet,
-      };
-    return Response.json(userResponse);
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      } as userResponse);
   } catch (error) {
     console.error('Login error:', error);
     return Response.json({ message: 'Internal server error' }, { status: 500 });
