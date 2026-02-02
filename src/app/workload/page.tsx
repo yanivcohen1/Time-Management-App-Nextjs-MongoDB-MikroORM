@@ -165,29 +165,30 @@ export default function WorkloadPage() {
                         {data.total} {data.total === 1 ? 'task' : 'tasks'}
                     </Typography>
                     
-                    <Grid container spacing={2}>
+                    <Box sx={{ overflowX: 'auto', pb: 1 }}>
+                      <Stack direction="row" spacing={2} sx={{ minWidth: 'max-content' }}>
                         {Object.keys(STATUS_MAP).map((statusKey) => (
-                            <Grid size="auto" key={statusKey}>
-                                <Box sx={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    gap: 1, 
-                                    border: 1, 
-                                    borderColor: 'divider', 
-                                    borderRadius: 5, 
-                                    px: 1.5, 
-                                    py: 0.5 
-                                }}>
-                                    <Typography variant="body2" sx={{ color: STATUS_TEXT_COLORS[statusKey] }}>
-                                        {STATUS_MAP[statusKey]}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                        {data.counts[statusKey]}
-                                    </Typography>
-                                </Box>
-                            </Grid>
+                            <Box key={statusKey} sx={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                gap: 1, 
+                                border: 1, 
+                                borderColor: 'divider', 
+                                borderRadius: 5, 
+                                px: 1.5, 
+                                py: 0.5,
+                                whiteSpace: 'nowrap'
+                            }}>
+                                <Typography variant="body2" sx={{ color: STATUS_TEXT_COLORS[statusKey] }}>
+                                    {STATUS_MAP[statusKey]}
+                                </Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                    {data.counts[statusKey]}
+                                </Typography>
+                            </Box>
                         ))}
-                    </Grid>
+                      </Stack>
+                    </Box>
                 </Paper>
             );
         })}

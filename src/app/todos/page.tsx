@@ -173,8 +173,8 @@ export default function TodosPage() {
         Track Status
       </Typography>
 
-      <Box sx={{ mb: 3 }}>
-        <Stack direction="row" spacing={2}>
+      <Box sx={{ mb: 3, overflowX: 'auto', pb: 1 }}>
+        <Stack direction="row" spacing={2} sx={{ minWidth: 'max-content' }}>
           <TextField
             label="Filter by Name"
             variant="outlined"
@@ -235,8 +235,8 @@ export default function TodosPage() {
         </Stack>
       </Box>
 
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableContainer component={Paper} sx={{ mb: 2, overflowX: 'auto' }}>
+        <Table sx={{ minWidth: 800 }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>

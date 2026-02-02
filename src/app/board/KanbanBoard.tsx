@@ -137,17 +137,18 @@ const KanbanBoard = () => {
   return (
     <Box data-testid="kanban-container" sx={{ 
       display: 'flex', 
-      flexDirection: isDesktop ? 'row' : 'column',
-      overflowX: { xs: 'hidden', md: 'auto' },
+      flexDirection: 'row',
+      overflowX: 'auto',
       height: { xs: 'auto', md: 'calc(100vh - 190px)' },
       gap: 2,
-      p: 2
+      p: 2,
+      pb: 4 // Add some padding at the bottom for the scrollbar
     }}>
       <DragDropContext onDragEnd={onDragEnd}>
         {Object.entries(columns).map(([columnId, columnTitle]) => (
           <Box key={columnId} sx={{ 
-            width: { xs: '100%', md: 'auto' },
-            flex: { md: 1 },
+            width: 320,
+            flexShrink: 0,
             display: 'flex', 
             flexDirection: 'column',
             border: '1px solid',

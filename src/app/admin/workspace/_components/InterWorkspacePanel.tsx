@@ -129,8 +129,8 @@ export function InterWorkspacePanel({
             <Typography variant="h6" gutterBottom>
               Todos for {usersData?.users.find(u => u.id === selectedUserId)?.name}
             </Typography>
-            <TableContainer>
-              <Table>
+            <TableContainer component={Paper} elevation={0} variant="outlined" sx={{ overflowX: 'auto' }}>
+              <Table sx={{ minWidth: 800 }}>
                 <TableHead>
                   <TableRow>
                     <TableCell>Title</TableCell>
