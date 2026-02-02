@@ -217,7 +217,7 @@ export default function Layout({ children }: LayoutProps) {
   );
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -314,7 +314,8 @@ export default function Layout({ children }: LayoutProps) {
           p: { xs: 1, sm: 3 }, 
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           maxWidth: '100vw',
-          overflowX: 'auto'
+          height: '100vh',
+          overflow: 'auto'
         }}
       >
         <Toolbar />

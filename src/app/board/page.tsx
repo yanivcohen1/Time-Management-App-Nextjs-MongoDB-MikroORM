@@ -26,15 +26,17 @@ export default function Board() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Layout>
-        <Box sx={{ mb: 2, px: 2, display: 'flex', alignItems: 'baseline', gap: 1 }}>
-          <Typography variant="h4" component="h1">
-            Task Board
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            drag&drop
-          </Typography>
+        <Box sx={{ minWidth: 1400 }}>
+          <Box sx={{ mb: 2, px: 2, display: 'flex', alignItems: 'baseline', gap: 1 }}>
+            <Typography variant="h4" component="h1">
+              Task Board
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              drag&drop
+            </Typography>
+          </Box>
+          <KanbanBoard />
         </Box>
-        <KanbanBoard />
       </Layout>
     </Suspense>
   );

@@ -169,74 +169,75 @@ export default function TodosPage() {
 
   return (
     <Layout>
-      <Typography variant="h4" gutterBottom>
-        Track Status
-      </Typography>
+      <Box sx={{ minWidth: 800 }}>
+        <Typography variant="h4" gutterBottom>
+          Track Status
+        </Typography>
 
-      <Box sx={{ mb: 3, overflowX: 'auto', pb: 1 }}>
-        <Stack direction="row" spacing={2} sx={{ minWidth: 'max-content' }}>
-          <TextField
-            label="Filter by Name"
-            variant="outlined"
-            value={filterTitle}
-            onChange={(e) => { setFilterTitle(e.target.value); setPage(0); }}
-            size="small"
-          />
-          <TextField
-            select
-            label="Filter by Status"
-            value={filterStatus}
-            onChange={(e) => { setFilterStatus(e.target.value); setPage(0); }}
-            size="small"
-            sx={{ minWidth: 150 }}
-            SelectProps={{
-              MenuProps: {
-                PaperProps: {
-                  sx: {
-                    '& .MuiMenuItem-root:hover': {
-                      backgroundColor: theme.palette.mode === 'light' ? '#1976d2' : undefined                    },
-                    '& .MuiMenuItem-root.Mui-selected': {
-                      backgroundColor: theme.palette.mode === 'light' ? '#1976d2' : undefined,
-                      color: theme.palette.mode === 'light' ? 'white' : undefined,
-                      '&:hover': {
+        <Box sx={{ mb: 3 }}>
+          <Stack direction="row" spacing={2}>
+            <TextField
+              label="Filter by Name"
+              variant="outlined"
+              value={filterTitle}
+              onChange={(e) => { setFilterTitle(e.target.value); setPage(0); }}
+              size="small"
+            />
+            <TextField
+              select
+              label="Filter by Status"
+              value={filterStatus}
+              onChange={(e) => { setFilterStatus(e.target.value); setPage(0); }}
+              size="small"
+              sx={{ minWidth: 150 }}
+              SelectProps={{
+                MenuProps: {
+                  PaperProps: {
+                    sx: {
+                      '& .MuiMenuItem-root:hover': {
+                        backgroundColor: theme.palette.mode === 'light' ? '#1976d2' : undefined                    },
+                      '& .MuiMenuItem-root.Mui-selected': {
                         backgroundColor: theme.palette.mode === 'light' ? '#1976d2' : undefined,
-                      }                    }
+                        color: theme.palette.mode === 'light' ? 'white' : undefined,
+                        '&:hover': {
+                          backgroundColor: theme.palette.mode === 'light' ? '#1976d2' : undefined,
+                        }                    }
+                    }
                   }
                 }
-              }
-            }}
-          >
-            <MenuItem value="ALL">All Statuses</MenuItem>
-            <MenuItem value="BACKLOG">Backlog</MenuItem>
-            <MenuItem value="PENDING">Pending</MenuItem>
-            <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
-            <MenuItem value="COMPLETED">Completed</MenuItem>
-          </TextField>
-          <TextField
-            label="Start Date"
-            type="date"
-            value={filterStartDate}
-            onChange={(e) => { setFilterStartDate(e.target.value); setPage(0); }}
-            size="small"
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextField
-            label="End Date"
-            type="date"
-            value={filterEndDate}
-            onChange={(e) => { setFilterEndDate(e.target.value); setPage(0); }}
-            size="small"
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Stack>
-      </Box>
+              }}
+            >
+              <MenuItem value="ALL">All Statuses</MenuItem>
+              <MenuItem value="BACKLOG">Backlog</MenuItem>
+              <MenuItem value="PENDING">Pending</MenuItem>
+              <MenuItem value="IN_PROGRESS">In Progress</MenuItem>
+              <MenuItem value="COMPLETED">Completed</MenuItem>
+            </TextField>
+            <TextField
+              label="Start Date"
+              type="date"
+              value={filterStartDate}
+              onChange={(e) => { setFilterStartDate(e.target.value); setPage(0); }}
+              size="small"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              label="End Date"
+              type="date"
+              value={filterEndDate}
+              onChange={(e) => { setFilterEndDate(e.target.value); setPage(0); }}
+              size="small"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Stack>
+        </Box>
 
-      <TableContainer component={Paper} sx={{ mb: 2, overflowX: 'auto' }}>
-        <Table sx={{ minWidth: 800 }} aria-label="simple table">
+        <TableContainer component={Paper} sx={{ mb: 2 }}>
+          <Table sx={{ minWidth: '100%' }} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>
@@ -385,6 +386,7 @@ export default function TodosPage() {
           </Stack>
         </Box>
       </Popover>
+      </Box>
     </Layout>
   );
 }
