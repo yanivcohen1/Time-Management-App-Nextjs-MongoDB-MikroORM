@@ -107,7 +107,7 @@ The easiest way to run the application is using Docker Compose. This will set up
     docker-compose up --build
     ```
 2.  **Access the application**:
-    Open [http://localhost:3000](http://localhost:3000) in your browser.
+    Open [http://localhost:4000](http://localhost:4000) in your browser.
 
 ### Default Credentials
 The database is automatically seeded with the following users:
@@ -151,7 +151,7 @@ Start the development server:
 pnpm dev
 ```
 
-The application will be available at `http://localhost:3000` (or the port specified in your output).
+The application will be available at `http://localhost:4000` (or the port specified in your output).
 
 ### Running Tests
 
