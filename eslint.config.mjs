@@ -1,10 +1,15 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
+import playwright from "eslint-plugin-playwright";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    ...playwright.configs["flat/recommended"],
+    files: ["e2e/**/*.ts", "e2e/**/*.spec.ts"],
+  },
   {
     files: ["**/__tests__/**/*.ts","__tests__/api/**/*.ts", "**/__tests__/**/*.tsx", "**/*.test.ts", "**/*.test.tsx",],
     rules: {

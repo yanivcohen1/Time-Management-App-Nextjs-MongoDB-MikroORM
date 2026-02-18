@@ -28,8 +28,7 @@
     },
     "types": [
       "vitest/globals",
-      "@testing-library/jest-dom",
-      "cypress"
+      "@testing-library/jest-dom"
     ],
     "plugins": [
       {
@@ -39,7 +38,6 @@
   },
   "exclude": [
     "node_modules",
-    "cypress/**",
     "coverage"
   ],
   "include": [

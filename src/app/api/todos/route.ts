@@ -34,7 +34,7 @@ export interface todosGetResponse {
   total: number;
 }
 
-export interface todosPostBody {
+export interface todosPostParams {
   title: string;
   description?: string;
   dueTime?: string | Date;
@@ -155,7 +155,7 @@ async function handlerPOST(request: NextRequest) {
   const orm = await getORM();
   const em = orm.em.fork();
 
-  const { title, description, dueTime, status, duration } = await request.json() as todosPostBody;
+  const { title, description, dueTime, status, duration } = await request.json() as todosPostParams;
   if (!title) {
     throw new ApiError(400, 'Title is required');
   }
