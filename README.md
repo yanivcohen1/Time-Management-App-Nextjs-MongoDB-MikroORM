@@ -167,6 +167,12 @@ pnpm test
 pnpm test:e2e
 ```
 
+**Running E2E Tests in UI Mode:**
+
+```bash
+pnpm test:e2e:ui
+```
+
 ### Linting
 
 Check for code quality issues:
@@ -187,6 +193,7 @@ pnpm lint
 | `pnpm test:watch` | Runs unit and integration tests using Vitest in watch mode. |
 | `pnpm test:coverage` | Runs unit and integration tests with coverage reporting using Vitest. |
 | `pnpm test:e2e` | Runs end-to-end tests using Playwright. |
+| `pnpm test:e2e:ui` | Runs end-to-end tests using Playwright in UI mode. |
 | `pnpm test:e2e:report` | Shows the last Playwright HTML test report. |
 | `pnpm seed:db` | Seeds the database with initial data. |
 | `pnpm docker-compose:up` | Starts the application and database with Docker Compose. |
