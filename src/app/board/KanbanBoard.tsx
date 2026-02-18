@@ -137,7 +137,7 @@ const KanbanBoard = () => {
   return (
     <Box data-testid="kanban-container" sx={{ 
       display: 'flex', 
-      flexDirection: 'row',
+      flexDirection: { xs: 'column', md: 'row' },
       height: { xs: 'auto', md: 'calc(100vh - 190px)' },
       gap: 2,
       p: 2,

@@ -14,7 +14,7 @@ A full-stack Agile Tasks application built with Next.js, MikroORM, MongoDB, and 
 *   **Authentication**: JWT (JSON Web Tokens) with `bcryptjs`
 *   **Testing**:
     *   Unit/Integration: [Vitest](https://vitest.dev/) & [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-    *   End-to-End (E2E): [Cypress](https://www.cypress.io/)
+    *   End-to-End (E2E): [Playwright](https://playwright.dev/)
 *   **Package Manager**: [pnpm](https://pnpm.io/)
 
 ## Features
@@ -41,12 +41,8 @@ todo-app-nextjs/
 ├── context/             # React Context definitions
 │   ├── AuthContext.tsx
 │   └── ThemeContext.tsx
-├── cypress/             # Cypress E2E tests
-│   ├── e2e/             # E2E test specifications
-│   ├── reports/         # Test reports
-│   ├── screenshots/     # Screenshots from tests
-│   ├── support/         # Cypress support files
-│   └── tsconfig.json
+├── e2e/                 # Playwright E2E tests
+│   ├── *.spec.ts        # E2E test specifications
 ├── entities/            # MikroORM entity definitions
 │   ├── Todo.ts
 │   └── User.ts
@@ -76,7 +72,7 @@ todo-app-nextjs/
 │   ├── globals.css
 │   └── Home.module.css
 ├── temp/                # Temporary files
-├── cypress.config.ts    # Cypress configuration
+├── playwright.config.ts # Playwright configuration
 ├── eslint.config.mjs    # ESLint configuration
 ├── vitest.config.ts     # Vitest configuration
 ├── vitest.setup.ts      # Vitest setup
@@ -165,13 +161,11 @@ The application will be available at `http://localhost:3000` (or the port specif
 pnpm test
 ```
 
-**End-to-End Tests (Cypress):**
+**End-to-End Tests (Playwright):**
 
-1.  Ensure the development server is running (`pnpm dev`).
-2.  Run Cypress tests:
-    ```bash
-    pnpm test:e2e
-    ```
+```bash
+pnpm test:e2e
+```
 
 ### Linting
 
@@ -192,7 +186,8 @@ pnpm lint
 | `pnpm test` | Runs unit and integration tests using Vitest. |
 | `pnpm test:watch` | Runs unit and integration tests using Vitest in watch mode. |
 | `pnpm test:coverage` | Runs unit and integration tests with coverage reporting using Vitest. |
-| `pnpm test:e2e` | Runs end-to-end tests using Cypress (headless mode). |
+| `pnpm test:e2e` | Runs end-to-end tests using Playwright. |
+| `pnpm test:e2e:report` | Shows the last Playwright HTML test report. |
 | `pnpm seed:db` | Seeds the database with initial data. |
 | `pnpm docker-compose:up` | Starts the application and database with Docker Compose. |
 | `pnpm docker-compose:down` | Stops the Docker containers and removes volumes. |
