@@ -42,3 +42,6 @@ next-env.d.ts
 planning instractions.txt
 cypress/reports/
 .github/
+playwright-report/*
+!playwright-report/index.html
+test-results/
