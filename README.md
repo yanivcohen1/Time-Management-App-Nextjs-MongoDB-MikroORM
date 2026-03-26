@@ -198,6 +198,7 @@ pnpm lint
 | `pnpm seed:db` | Seeds the database with initial data. |
 | `pnpm docker-compose:up` | Starts the application and database with Docker Compose. |
 | `pnpm docker-compose:down` | Stops the Docker containers and removes volumes. |
+| `pnpm audit` | Checks for known security vulnerabilities in installed dependencies. |
 | `pnpm docker-compose:seed` | Manually triggers the database seeder container. |
 | `pnpm mikro-orm:create` | Creates a new migration file in `./migrations`. |
 
